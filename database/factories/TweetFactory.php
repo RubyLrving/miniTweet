@@ -18,6 +18,7 @@ class TweetFactory extends Factory
     {
         return [
             //
+            'user_id' => 1, 
             'content' => $this->faker->realText(100)
         ];
     }
