@@ -8,9 +8,13 @@
 
 ## 開発環境の構築
 
-1. githubからプロジェクトのclone
+1. githubからプロジェクトのcloneのSSHを取得して実行
 
 2. プロジェクトのルートへ移動
+
+```
+cd ./minitweet
+```
 
 3. .env.exampleをコピーして.envの作成
 
@@ -18,7 +22,7 @@
 cp .env.example .env
 ```
 
-4. .envのDB_USERNAME、DB_PASSWORDに任意のパラメータを設定する。パラメータがない場合には追加。
+4. .envのDB_USERNAME、DB_PASSWORDに任意のパラメータを設定する。
 
 ```
 DB_USERNAME=
@@ -42,11 +46,7 @@ docker run --rm \
 ./vendor/bin/sail up -d
 ```
 
-7. コマンドの省略手順を行う
-
-./vendor/bin/sail → sailとする。
-google検索してください。
-
+7. 別の項目に記載されているコマンドの省略手順を行う（このファイルの下記に記載）
 
 8. アプリケーションキー(APP_KEY)がない場合は設定する
 
@@ -62,4 +62,112 @@ docker-compose up --build -d
 
 ```
 sail php artisan config:cache
+```
+
+## コマンドの省略手順
+
+1. macの場合
+
+シェルの設定ファイルを開く。
+
+```
+vim ~/.zshrc
+```
+
+iキーを押してインサイトモードにし、エイリアスの入力をする。
+
+```
+alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+```
+
+escキーを押す。
+
+終了コマンドを押す。
+
+```
+:wq
+```
+
+設定ファイルの再読み込みします。
+
+```
+source ~/.zshrc
+```
+
+## 開発環境の準備(元のlaravelのプロジェクトからの変更点)
+
+1. UTCを日本時間のJSTへ変更
+
+docker/8.3/Dockerfileの「ENV TZ」を変更する。
+
+```
+ENV TZ='Asia/Tokyo'
+```
+
+再ビルドを実行する。
+
+```
+sail build --no-cache
+```
+
+再起動する。
+
+```
+sail up -d
+```
+
+ログインをする。
+
+```
+sail shell
+```
+
+日付を確認する。
+
+```
+date
+```
+
+ログアウトする。
+
+```
+exit
+```
+
+2. MySQLの文字コードを変更
+
+docker/8.3に「my.cnf」を作成する。
+下記を記載する。
+
+```
+[mysqld]
+character-set-server = utf8mb4
+collation-server = utf8mb4_bin
+
+[client]
+default-character-set = utf8mb4
+```
+
+docker-compose.ymlのmysqlのvolumesに下記を追記する。
+
+```
+ - './docker/8.3/my.cnf:/etc/my.cnf'
+```
+
+mysqlへログインする。
+
+```
+sail mysql
+```
+
+文字コードを確認する。
+
+```
+show variables like '%char%';
+```
+
+mysqlからログアウトする。
+
+```
+exit
 ```
