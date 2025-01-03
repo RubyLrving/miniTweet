@@ -64,6 +64,12 @@ docker-compose up --build -d
 sail php artisan config:cache
 ```
 
+10. DBの準備をしましょう   
+
+```
+sail artisan migrate:fresh --seed
+```
+
 ## コマンドの省略手順
 
 1. macの場合
@@ -178,6 +184,10 @@ exit
 
 ```
 sail test
+```
+
+```
+sail test --env=testing
 ```
 
 - `sail artisan optimize`後にbreezeの基本テストコードでエラーが出る   
