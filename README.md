@@ -2,7 +2,7 @@
 つぶやきを表示するwebサービス
 
 ## 環境
-- php8.3.13
+- php8.4
 - Laravel Framework 10.48.22
 - docker8.3
 
@@ -98,7 +98,7 @@ source ~/.zshrc
 
 1. UTCを日本時間のJSTへ変更
 
-docker/8.3/Dockerfileの「ENV TZ」を変更する。
+docker/8.4/Dockerfileの「ENV TZ」を変更する。
 
 ```
 ENV TZ='Asia/Tokyo'
@@ -136,7 +136,7 @@ exit
 
 2. MySQLの文字コードを変更
 
-docker/8.3に「my.cnf」を作成する。
+docker/8.4に「my.cnf」を作成する。
 下記を記載する。
 
 ```
@@ -151,7 +151,7 @@ default-character-set = utf8mb4
 docker-compose.ymlのmysqlのvolumesに下記を追記する。
 
 ```
- - './docker/8.3/my.cnf:/etc/my.cnf'
+ - './docker/8.4/my.cnf:/etc/my.cnf'
 ```
 
 mysqlへログインする。
@@ -170,4 +170,21 @@ mysqlからログアウトする。
 
 ```
 exit
+```
+
+## テストコード
+
+- テストの実行   
+
+```
+sail test
+```
+
+- `sail artisan optimize`後にbreezeの基本テストコードでエラーが出る   
+
+```
+sail artisan cache:clear
+sail artisan config:clear
+sail artisan route:clear
+sail artisan view:clear
 ```
