@@ -5,6 +5,7 @@
 - php8.4
 - Laravel Framework 10.48.22
 - docker8.3
+- vercel
 
 ## 開発環境の構築
 
